@@ -36,7 +36,8 @@ int tohot = 24;
 int cool = 20;
 int laststate = 0;
 int fanOnOFF = 0;
-
+char st = char(223);
+char st1 = (char)223;
 void setup() {
   // start serial port
   Serial.begin(9600);
@@ -67,12 +68,51 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
     sensors.requestTemperatures(); // Send the command to get temperatures
-    //lcd.print(char(223));
     setState(sensors.getTempC(insideThermometer));
+    printFanStatus();
     printTemperature(insideThermometer);
-    
+}
+
+void printTemperature(DeviceAddress deviceAddress)
+{
+  float tempC = sensors.getTempC(deviceAddress);
+  float wilgotnosc = dht.readHumidity();
+  float t = dht.readTemperature();
+  char ll = char(223);
+  String Celcius = "C";
+  String Procent = "%";
+  
+  Serial.print("Temp C: ");
+  Serial.print(tempC);
+  Serial.print(" Temp F: ");
+  Serial.println(DallasTemperature::toFahrenheit(tempC)); // Converts tempC to Fahrenheit
+
+  printLcd(0,0,tempC,Celcius,true);
+  printLcd(10,1,t,Procent,false); 
+  printLcd(0,1,t,Celcius,true); 
+}
+
+void printLcd(int start, int line,float data, String mySymbol, bool character)
+{
+  char ll = char(223);
+  
+  lcd.setCursor(start, line);
+  lcd.print(data);
+  if (character == 1 ){ 
+      lcd.print(ll);
+    }
+
+  lcd.print(mySymbol);
+}
+
+void printAddress(DeviceAddress deviceAddress)
+{
+  for (uint8_t i = 0; i < 8; i++)
+  {
+    if (deviceAddress[i] < 16) Serial.print("0");
+    Serial.print(deviceAddress[i], HEX);
+  }
 }
 
 // check temperature and set fan and laststate
@@ -114,41 +154,15 @@ int lastState()
    }
 }
 
-void printTemperature(DeviceAddress deviceAddress)
+void printFanStatus()
 {
-  float tempC = sensors.getTempC(deviceAddress);
-  float wilgotnosc = dht.readHumidity();
-  float t = dht.readTemperature();
-  
-  Serial.print("Temp C: ");
-  Serial.print(tempC);
-  Serial.print(" Temp F: ");
-  //Serial.print("%RH | ");
-  Serial.println(DallasTemperature::toFahrenheit(tempC)); // Converts tempC to Fahrenheit
-
-
-  //lcd.backlight(); // zalaczenie podwietlenia
-  lcd.setCursor(0, 0);
-  lcd.print(tempC);
-  lcd.print(char(223));
-  lcd.print("C");
-  lcd.setCursor(0, 1);
-  
-  lcd.print(wilgotnosc);
-  lcd.print("% ");
-  lcd.print(t);
-  lcd.print(char(223));
-  lcd.print("C");
-
-  //Serial.println(strcat(char(223),"C"));
-  delay (2000);
-}
-
-void printAddress(DeviceAddress deviceAddress)
-{
-  for (uint8_t i = 0; i < 8; i++)
+  if (fanOnOFF == 1)
   {
-    if (deviceAddress[i] < 16) Serial.print("0");
-    Serial.print(deviceAddress[i], HEX);
+    lcd.setCursor(10, 0);
+    lcd.print("FAN:On");
+  } else 
+  {
+    lcd.setCursor(9, 0);
+    lcd.print("FAN:Off");
   }
 }
