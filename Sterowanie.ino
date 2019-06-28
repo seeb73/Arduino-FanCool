@@ -57,8 +57,8 @@ void setup() {
   Serial.println();
   
   //LCD
-  lcd.clear();
   lcd.begin(16, 2);  // Inicjalizacja LCD 2x16
+  lcd.clear();
   
   // przekazniki setup
   pinMode(switch1, OUTPUT);
