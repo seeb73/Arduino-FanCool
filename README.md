@@ -25,6 +25,7 @@ Komponenty:
 - I2C library
 - OneWire library
 - DallasTemperature library
+- Adafruit Unified Sensor library
 
 https://bitbucket.org/fmalpartida/new-liquidcrystal/downloads/
 moved to https://github.com/fmalpartida/New-LiquidCrystal
