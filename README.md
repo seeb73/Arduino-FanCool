@@ -11,6 +11,7 @@ Komponenty:
 - Biblioteka LiquidCrystal
 - Biblioteka I2C
 - Biblioteka OneWire
+- Biblioteka DallasTemperature
 
 ### Components:
 - Arduino
@@ -23,6 +24,7 @@ Komponenty:
 - LiquidCrystal library
 - I2C library
 - OneWire library
+- DallasTemperature library
 
 https://bitbucket.org/fmalpartida/new-liquidcrystal/downloads/
 moved to https://github.com/fmalpartida/New-LiquidCrystal
